@@ -12,5 +12,4 @@ public class BuyerService {
     public List<BuyerDTO> getAll() {
         return buyerDAO.getAll();
     }
-
 }
