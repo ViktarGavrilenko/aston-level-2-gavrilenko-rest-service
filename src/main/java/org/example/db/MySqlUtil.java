@@ -3,7 +3,7 @@ package org.example.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.example.config.ConfigurationProperties;
-import org.example.entity.Item;
+import org.example.model.Item;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;

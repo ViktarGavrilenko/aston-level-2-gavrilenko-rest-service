@@ -1,7 +1,7 @@
-package org.example.mapper;
+package org.example.servlets.mapper;
 
-import org.example.dto.BuyerDTO;
-import org.example.entity.Buyer;
+import org.example.servlets.dto.BuyerDTO;
+import org.example.model.Buyer;
 import org.mapstruct.Mapper;
 
 @Mapper

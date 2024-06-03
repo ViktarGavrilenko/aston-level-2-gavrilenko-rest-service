@@ -1,7 +1,7 @@
-package org.example.mapper;
+package org.example.servlets.mapper;
 
-import org.example.dto.ItemDTO;
-import org.example.entity.Item;
+import org.example.servlets.dto.ItemDTO;
+import org.example.model.Item;
 import org.mapstruct.Mapper;
 
 @Mapper

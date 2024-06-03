@@ -1,7 +1,7 @@
 package org.example.services.impl;
 
 import org.example.dao.BuyerDAO;
-import org.example.entity.Buyer;
+import org.example.model.Buyer;
 import org.example.services.BuyerService;
 
 import java.util.List;

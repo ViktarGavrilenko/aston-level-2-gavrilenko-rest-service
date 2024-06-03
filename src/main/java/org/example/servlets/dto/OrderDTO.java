@@ -1,6 +1,6 @@
-package org.example.dto;
+package org.example.servlets.dto;
 
-import org.example.entity.Item;
+import org.example.model.Item;
 
 import java.util.List;
 

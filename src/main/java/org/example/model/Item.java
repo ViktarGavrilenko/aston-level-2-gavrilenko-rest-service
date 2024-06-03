@@ -1,4 +1,4 @@
-package org.example.entity;
+package org.example.model;
 
 public class Item {
     private String name;

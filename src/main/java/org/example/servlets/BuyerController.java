@@ -1,6 +1,6 @@
 package org.example.servlets;
 
-import org.example.entity.Buyer;
+import org.example.model.Buyer;
 import org.example.services.impl.BuyerServiceImpl;
 
 import javax.servlet.ServletException;

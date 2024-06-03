@@ -1,4 +1,4 @@
-package org.example.dto;
+package org.example.servlets.dto;
 
 import java.util.List;
 

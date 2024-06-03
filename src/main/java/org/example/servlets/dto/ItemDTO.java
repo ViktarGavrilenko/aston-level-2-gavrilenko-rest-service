@@ -1,6 +1,6 @@
-package org.example.dto;
+package org.example.servlets.dto;
 
-import org.example.entity.Order;
+import org.example.model.Order;
 
 import java.util.List;
 

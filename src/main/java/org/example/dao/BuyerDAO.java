@@ -1,8 +1,8 @@
 package org.example.dao;
 
-import org.example.entity.Buyer;
-import org.example.entity.Item;
-import org.example.entity.Order;
+import org.example.model.Buyer;
+import org.example.model.Item;
+import org.example.model.Order;
 
 import java.util.ArrayList;
 import java.util.List;
