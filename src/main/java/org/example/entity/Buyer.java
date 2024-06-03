@@ -6,7 +6,7 @@ public class Buyer {
     private String name;
     private List<Order> orders;
 
-    public Buyer(List<Order> orders, String name) {
+    public Buyer(String name, List<Order> orders) {
         this.orders = orders;
         this.name = name;
     }
@@ -25,5 +25,13 @@ public class Buyer {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    @Override
+    public String toString() {
+        return "Buyer{" +
+                "name='" + name + '\'' +
+                ", orders=" + orders +
+                '}';
     }
 }

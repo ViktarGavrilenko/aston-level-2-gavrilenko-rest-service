@@ -26,4 +26,12 @@ public class Order {
     public void setItems(List<Item> items) {
         this.items = items;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "number=" + number +
+                ", items=" + items +
+                '}';
+    }
 }

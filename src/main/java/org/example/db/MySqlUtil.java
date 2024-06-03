@@ -3,6 +3,7 @@ package org.example.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.example.config.ConfigurationProperties;
+import org.example.entity.Item;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -70,22 +71,48 @@ public class MySqlUtil {
             resultSet.next();
             return resultSet.getString(1);
         } catch (SQLException e) {
-
             throw new IllegalArgumentException(sqlQuery + " " + SQL_QUERY_FAILED, e);
         }
     }
 
-    public static List<String> getListFirstColumn(String selectStr) {
+    public static List<String> getListFirstColumnStr(String selectStr) {
         ResultSet resultSet = sendSelectQuery(selectStr);
-        List<String> listNewEmployee = new ArrayList<>();
+        List<String> listFirstColumn = new ArrayList<>();
         try {
             while (resultSet.next()) {
-                listNewEmployee.add(resultSet.getString("name"));
+                listFirstColumn.add(resultSet.getString(1));
             }
         } catch (SQLException e) {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }
-        return listNewEmployee;
+        return listFirstColumn;
+    }
+
+    public static List<Integer> getListFirstColumnInt(String selectStr) {
+        ResultSet resultSet = sendSelectQuery(selectStr);
+        List<Integer> listFirstColumn = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                listFirstColumn.add(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
+        }
+        return listFirstColumn;
+    }
+
+    public static Item getItemById(String selectStr) {
+        ResultSet resultSet = sendSelectQuery(selectStr);
+        Item item;
+        try {
+            resultSet.next();
+            String name = resultSet.getString("name");
+            int price = resultSet.getInt("price");
+            item = new Item(name, price);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
+        }
+        return item;
     }
 
     public static ResultSet sendSelectQuery(String sqlQuery) {

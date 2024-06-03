@@ -1,16 +1,14 @@
 package org.example.dto;
 
-import org.example.entity.Order;
-
 import java.util.List;
 
 public class BuyerDTO {
     private String name;
-    private List<Order> orders;
+    private List<Integer> orders;
 
-    public BuyerDTO(List<Order> orders, String name) {
-        this.orders = orders;
+    public BuyerDTO(String name, List<Integer> orders) {
         this.name = name;
+        this.orders = orders;
     }
 
     public String getName() {
@@ -21,11 +19,11 @@ public class BuyerDTO {
         this.name = name;
     }
 
-    public List<Order> getOrders() {
+    public List<Integer> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<Integer> orders) {
         this.orders = orders;
     }
 
