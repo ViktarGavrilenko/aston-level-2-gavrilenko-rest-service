@@ -5,8 +5,8 @@ import org.example.model.Item;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface ItemMapper {
-    Item itemDTOtoItem(ItemDTO itemDTO);
+public interface ItemDtoMapper {
+    Item itemDTOToItem(ItemDTO itemDTO);
 
     ItemDTO itemToItemDTO(Item item);
 }

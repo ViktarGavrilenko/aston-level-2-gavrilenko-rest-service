@@ -5,7 +5,7 @@ import org.example.model.Buyer;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface BuyerMapper {
+public interface BuyerDtoMapper {
     Buyer buyerDTOToBuyer(BuyerDTO buyerDTO);
 
     BuyerDTO buyerToBuyerDTO(Buyer buyer);

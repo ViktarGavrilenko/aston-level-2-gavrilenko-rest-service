@@ -8,4 +8,10 @@ public interface BuyerService {
     List<Buyer> getAll();
 
     Buyer get(int id);
+
+    Buyer save(Buyer buyer);
+
+    void update(Integer id, Buyer buyer);
+
+    void delete(int buyerId);
 }

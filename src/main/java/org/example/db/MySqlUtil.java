@@ -3,7 +3,6 @@ package org.example.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.example.config.ConfigurationProperties;
-import org.example.model.Item;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -101,20 +100,6 @@ public class MySqlUtil {
         return listFirstColumn;
     }
 
-    public static Item getItemById(String selectStr) {
-        ResultSet resultSet = sendSelectQuery(selectStr);
-        Item item;
-        try {
-            resultSet.next();
-            String name = resultSet.getString("name");
-            int price = resultSet.getInt("price");
-            item = new Item(name, price);
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
-        }
-        return item;
-    }
-
     public static ResultSet sendSelectQuery(String sqlQuery) {
         Connection connection = getConnection();
         Statement statement;
@@ -122,8 +107,21 @@ public class MySqlUtil {
             statement = connection.createStatement();
             return statement.executeQuery(sqlQuery);
         } catch (SQLException e) {
-
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }
+    }
+
+    public static boolean sendSqlQuery(String sqlQuery) {
+        boolean result = false;
+        Connection connection = getConnection();
+
+        try (Statement statement = connection.createStatement()) {
+            if (statement.executeUpdate(sqlQuery) > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
+        }
+        return result;
     }
 }

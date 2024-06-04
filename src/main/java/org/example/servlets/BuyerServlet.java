@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/buyer/*")
-public class BuyerController extends HttpServlet {
+@WebServlet(name = "BuyerServlet", value = "/buyer/*")
+public class BuyerServlet extends HttpServlet {
     private BuyerServiceImpl buyerService = new BuyerServiceImpl();
 
     @Override
@@ -24,10 +24,10 @@ public class BuyerController extends HttpServlet {
         PrintWriter printWriter = resp.getWriter();
         if (str == null) {
             List<Buyer> buyers = buyerService.getAll();
-            printWriter.write("Hello! " + buyers.toString());
+            printWriter.write(buyers.toString());
         } else {
             Buyer buyer = buyerService.get(Integer.parseInt(str.substring(1)));
-            printWriter.write("Hello! " + buyer.toString());
+            printWriter.write(buyer.toString());
         }
         printWriter.close();
     }

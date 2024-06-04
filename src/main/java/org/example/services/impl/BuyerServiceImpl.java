@@ -1,21 +1,36 @@
 package org.example.services.impl;
 
-import org.example.dao.BuyerDAO;
+import org.example.repository.impl.BuyerRepositoryImpl;
 import org.example.model.Buyer;
 import org.example.services.BuyerService;
 
 import java.util.List;
 
 public class BuyerServiceImpl implements BuyerService {
-    private BuyerDAO buyerDAO = new BuyerDAO();
+    private BuyerRepositoryImpl buyerRepository = new BuyerRepositoryImpl();
 
     @Override
     public List<Buyer> getAll() {
-        return buyerDAO.getAll();
+        return buyerRepository.getAll();
     }
 
     @Override
     public Buyer get(int id) {
-        return buyerDAO.get(id);
+        return buyerRepository.get(id);
+    }
+
+    @Override
+    public Buyer save(Buyer buyer) {
+        return buyerRepository.save(buyer);
+    }
+
+    @Override
+    public void update(Integer id, Buyer buyer) {
+        buyerRepository.update(id, buyer);
+    }
+
+    @Override
+    public void delete(int buyerId) {
+        buyerRepository.delete(buyerId);
     }
 }
