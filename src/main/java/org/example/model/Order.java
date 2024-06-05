@@ -3,12 +3,22 @@ package org.example.model;
 import java.util.List;
 
 public class Order {
+    private int id;
     private int number;
     private List<Item> items;
 
-    public Order(int number, List<Item> items) {
+    public Order(int id, int number, List<Item> items) {
+        this.id = id;
         this.number = number;
         this.items = items;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNumber() {
@@ -30,7 +40,8 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" +
-                "number=" + number +
+                "id=" + id +
+                ", number=" + number +
                 ", items=" + items +
                 '}';
     }

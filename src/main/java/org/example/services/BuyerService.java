@@ -11,7 +11,7 @@ public interface BuyerService {
 
     Buyer save(Buyer buyer);
 
-    void update(Integer id, Buyer buyer);
+    void update(Buyer buyer);
 
     void delete(int buyerId);
 }

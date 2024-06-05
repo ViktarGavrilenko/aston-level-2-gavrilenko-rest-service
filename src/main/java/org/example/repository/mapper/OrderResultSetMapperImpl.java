@@ -18,7 +18,7 @@ public class OrderResultSetMapperImpl implements OrderResultSetMapper {
             resultSet.next();
             int id = resultSet.getInt("id");
             int number = resultSet.getInt("number");
-            order = new Order(number, repository.getListItemsInOrderById(id));
+            order = new Order(id, number, repository.getListItemsInOrderById(id));
         } catch (SQLException e) {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }

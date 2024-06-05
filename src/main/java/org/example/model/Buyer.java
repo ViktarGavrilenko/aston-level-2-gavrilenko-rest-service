@@ -3,12 +3,22 @@ package org.example.model;
 import java.util.List;
 
 public class Buyer {
+    private int id;
     private String name;
     private List<Order> orders;
 
-    public Buyer(String name, List<Order> orders) {
+    public Buyer(int id, String name, List<Order> orders) {
+        this.id = id;
         this.orders = orders;
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -30,7 +40,8 @@ public class Buyer {
     @Override
     public String toString() {
         return "Buyer{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", orders=" + orders +
                 '}';
     }

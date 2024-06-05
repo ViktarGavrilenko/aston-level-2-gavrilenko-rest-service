@@ -1,12 +1,22 @@
 package org.example.servlets.dto;
 
 public class ItemDTO {
+    private int id;
     private String name;
     private int price;
 
-    public ItemDTO(String name, int price) {
+    public ItemDTO(int id, String name, int price) {
+        this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

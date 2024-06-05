@@ -13,9 +13,10 @@ public class ItemResultSetMapperImpl implements ItemResultSetMapper {
         Item item;
         try {
             resultSet.next();
+            int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             int price = resultSet.getInt("price");
-            item = new Item(name, price);
+            item = new Item(id, name, price);
         } catch (SQLException e) {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }

@@ -11,8 +11,9 @@ import static org.example.db.MySqlUtil.*;
 import static org.example.repository.impl.BuyerRepositoryImpl.ITEMS_OF_ORDER;
 
 public class ItemRepositoryImpl implements ItemRepository {
-    public static final String ITEM_BY_ID = "SELECT name, price FROM items where id=%s";
-    public static final String ID_ITEM = "SELECT id FROM items where 1";
+    public static final String ITEM_BY_ID = "SELECT id, name, price FROM items where id=%s";
+    public static final String ITEM_BY_NAME_AND_PRICE = "SELECT id, name, price FROM items where name='%s' and price=%s";
+    public static final String ID_ITEMS = "SELECT id FROM items where 1";
     public static final String INSERT_ITEM = "INSERT INTO items(name, price) VALUES ('%s', %s)";
     public static final String DELETE_ITEM_BY_ID = "DELETE FROM items where id = '%s'";
     public static final String UPDATE_ITEM_BY_ID = "UPDATE items SET name='%s', price=%s where id = '%s'";
@@ -26,7 +27,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public List<Item> getAll() {
-        List<Integer> idItems = getListFirstColumnInt(ID_ITEM);
+        List<Integer> idItems = getListFirstColumnInt(ID_ITEMS);
         List<Item> items = new ArrayList<>();
         for (int idItem : idItems) {
             items.add(get(idItem));
@@ -37,15 +38,16 @@ public class ItemRepositoryImpl implements ItemRepository {
     @Override
     public Item save(Item item) {
         if (sendSqlQuery(String.format(INSERT_ITEM, item.getName(), item.getPrice()))) {
-            return item;
+            return itemResultSetMapper.map(sendSelectQuery(
+                    String.format(ITEM_BY_NAME_AND_PRICE, item.getName(), item.getPrice())));
         } else {
             throw new IllegalArgumentException(SQL_QUERY_FAILED);
         }
     }
 
     @Override
-    public void update(Integer id, Item item) {
-        sendSqlQuery(String.format(UPDATE_ITEM_BY_ID, item.getName(), item.getPrice(), id));
+    public void update(Item item) {
+        sendSqlQuery(String.format(UPDATE_ITEM_BY_ID, item.getName(), item.getPrice(), item.getId()));
     }
 
     @Override

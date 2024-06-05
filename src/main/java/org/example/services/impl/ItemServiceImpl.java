@@ -25,8 +25,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void update(int id, Item item) {
-        itemRepository.update(id, item);
+    public void update(Item item) {
+        itemRepository.update(item);
     }
 
     @Override

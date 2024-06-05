@@ -25,8 +25,8 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
-    public void update(Integer id, Buyer buyer) {
-        buyerRepository.update(id, buyer);
+    public void update(Buyer buyer) {
+        buyerRepository.update(buyer);
     }
 
     @Override

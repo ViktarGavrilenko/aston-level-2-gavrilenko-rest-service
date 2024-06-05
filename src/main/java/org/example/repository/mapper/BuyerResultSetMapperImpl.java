@@ -18,7 +18,7 @@ public class BuyerResultSetMapperImpl implements BuyerResultSetMapper {
             resultSet.next();
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
-            buyer = new Buyer(name, repository.getListOfBuyerOrdersById(id));
+            buyer = new Buyer(id, name, repository.getListOfBuyerOrdersById(id));
         } catch (SQLException e) {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }

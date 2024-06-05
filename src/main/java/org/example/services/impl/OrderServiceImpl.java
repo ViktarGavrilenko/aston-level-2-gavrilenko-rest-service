@@ -24,8 +24,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(Integer id, Order order) {
-        repository.update(id, order);
+    public void update(Order order) {
+        repository.update(order);
     }
 
     @Override

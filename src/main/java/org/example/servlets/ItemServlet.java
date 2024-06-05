@@ -37,9 +37,10 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         int price = Integer.parseInt(req.getParameter("price"));
-        Item item = dtoMapper.itemDTOToItem(new ItemDTO(name, price));
+        Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price));
         Item saved = service.save(item);
         ItemDTO itemDTO = dtoMapper.itemToItemDTO(saved);
 
@@ -54,8 +55,8 @@ public class ItemServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         int price = Integer.parseInt(req.getParameter("price"));
-        Item item = dtoMapper.itemDTOToItem(new ItemDTO(name, price));
-        service.update(id, item);
+        Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price));
+        service.update(item);
     }
 
     @Override

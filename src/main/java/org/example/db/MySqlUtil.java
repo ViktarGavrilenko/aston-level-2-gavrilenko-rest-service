@@ -1,14 +1,9 @@
 package org.example.db;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.example.config.ConfigurationProperties;
 
 import java.io.FileNotFoundException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -33,34 +28,22 @@ public class MySqlUtil {
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String JDBC_URL = String.format("jdbc:mysql://%s:%s/%s", DB_HOST, DB_PORT, DB_NAME);
 
-
     public static final String SQL_QUERY_FAILED = "Sql query failed...";
     public static final String CONNECTION_FAILED = "Connection failed...";
+
     private static Connection connection;
 
-    private static HikariConfig config = new HikariConfig();
-    private static HikariDataSource dataSource;
-
-    static {
-        try {
-            Class.forName(DB_DRIVER);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        config.setJdbcUrl(JDBC_URL);
-        config.setUsername(DB_USER);
-        config.setPassword(DB_PASS);
-        config.setConnectionTimeout(50000);
-        config.setMaximumPoolSize(100);
-        config.setLeakDetectionThreshold(1000);
-        dataSource = new HikariDataSource(config);
-    }
-
-    public static Connection getConnection() {
-        try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(CONNECTION_FAILED, e);
+    private static Connection getConnection() {
+        if (connection != null) {
+            return connection;
+        } else {
+            try {
+                Class.forName(DB_DRIVER);
+                connection = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+                return connection;
+            } catch (ClassNotFoundException | SQLException e) {
+                throw new IllegalArgumentException(CONNECTION_FAILED, e);
+            }
         }
     }
 
@@ -123,5 +106,30 @@ public class MySqlUtil {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }
         return result;
+    }
+
+    public static void setAutoCommitFalse() {
+        try {
+            getConnection().setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            getConnection().setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setAutoCommitTrue() {
+        try {
+            getConnection().setAutoCommit(true);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void completeTransaction() {
+        try {
+            getConnection().commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

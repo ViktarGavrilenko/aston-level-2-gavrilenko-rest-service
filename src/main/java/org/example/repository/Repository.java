@@ -9,7 +9,7 @@ public interface Repository<T, K> {
 
     T save(T t);
 
-    void update(K id, T t);
+    void update(T t);
 
     void delete(K id);
 }
