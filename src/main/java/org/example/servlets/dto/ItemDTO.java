@@ -1,14 +1,20 @@
 package org.example.servlets.dto;
 
+import org.example.model.Order;
+
+import java.util.List;
+
 public class ItemDTO {
     private int id;
     private String name;
     private int price;
+    private List<Order> orders;
 
-    public ItemDTO(int id, String name, int price) {
+    public ItemDTO(int id, String name, int price, List<Order> orders) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.orders = orders;
     }
 
     public int getId() {
@@ -33,5 +39,13 @@ public class ItemDTO {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

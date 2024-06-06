@@ -1,6 +1,7 @@
 package org.example.servlets;
 
 import org.example.model.Item;
+import org.example.model.Order;
 import org.example.services.impl.ItemServiceImpl;
 import org.example.servlets.dto.ItemDTO;
 import org.example.servlets.mapper.ItemDtoMapperImpl;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "ItemServlet", value = "/item/*")
@@ -42,7 +44,8 @@ public class ItemServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         int price = Integer.parseInt(req.getParameter("price"));
-        Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price));
+        List<Order> orders = new ArrayList<>(); //Заполнить orders
+        Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price, orders));
         Item saved = service.save(item);
         ItemDTO itemDTO = dtoMapper.itemToItemDTO(saved);
 
@@ -57,7 +60,9 @@ public class ItemServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         int price = Integer.parseInt(req.getParameter("price"));
-        Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price));
+        List<Order> orders = new ArrayList<>();
+        Order order = new Order(200, 2005, )
+        Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price, orders));
         service.update(item);
     }
 

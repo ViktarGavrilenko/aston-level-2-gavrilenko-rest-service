@@ -1,5 +1,6 @@
 package org.example.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Item {
@@ -7,11 +8,13 @@ public class Item {
 
     private String name;
     private int price;
+    private List<Order> orders;
 
-    public Item(int id, String name, int price) {
+    public Item(int id, String name, int price, List<Order> orders) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.orders = orders;
     }
 
     public int getId() {
@@ -36,6 +39,14 @@ public class Item {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override

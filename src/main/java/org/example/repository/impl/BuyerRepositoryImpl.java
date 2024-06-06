@@ -22,8 +22,8 @@ public class BuyerRepositoryImpl implements BuyerRepository {
     public static final String INSERT_BUYER_ORDERS = "INSERT INTO buyer_order (id_buyer, id_order) VALUES (%s, %s)";
 
     public static final String ORDERS_OF_BUYER = "SELECT id_order FROM buyer_order WHERE id_buyer=%s;";
-    public static final String ITEMS_OF_ORDER =
-            "SELECT i.id FROM items i LEFT JOIN order_items oi ON oi.id_item=i.id WHERE oi.id_order=%s;";
+    public static final String SELECT_ID_ITEMS_OF_ORDER_BY_ID_ORDER =
+            "SELECT id_item FROM order_items WHERE id_order=%s;";
     public static final String DELETE_BUYER_BY_ID = "DELETE FROM buyers WHERE id = %s;";
     public static final String DELETE_ORDER_OF_BUYER_FROM_BUYER_ORDER = "DELETE FROM buyer_order WHERE id_buyer = %s;";
     public static final String DELETE_ORDER_OF_BUYER_FROM_BUYER_ORDER_BY_ID_ORDER =
