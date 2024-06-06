@@ -12,11 +12,14 @@ public class ItemResultSetMapperImpl implements ItemResultSetMapper {
     public Item map(ResultSet resultSet) {
         Item item;
         try {
-            resultSet.next();
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            int price = resultSet.getInt("price");
-            item = new Item(id, name, price);
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                int price = resultSet.getInt("price");
+                item = new Item(id, name, price);
+            } else {
+                item = null;
+            }
         } catch (SQLException e) {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }

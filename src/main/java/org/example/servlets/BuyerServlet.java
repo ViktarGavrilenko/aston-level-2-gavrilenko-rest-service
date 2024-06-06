@@ -8,7 +8,6 @@ import org.example.services.impl.BuyerServiceImpl;
 import org.example.servlets.dto.BuyerDTO;
 import org.example.servlets.mapper.BuyerDtoMapperImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +34,9 @@ public class BuyerServlet extends HttpServlet {
             printWriter.write(buyers.toString());
         } else {
             Buyer buyer = buyerService.get(Integer.parseInt(str.substring(1)));
-            printWriter.write(buyer.toString());
+            if (buyer != null) {
+                printWriter.write(buyer.toString());
+            }
         }
         printWriter.close();
     }
@@ -80,12 +81,46 @@ public class BuyerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
+        int id = Integer.parseInt(req.getParameter("id"));
+        service.delete(id);
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
+        int id = 2;
+        String name = "Дмитрий";
+        List<Order> orders = new ArrayList<>();
+        ItemRepositoryImpl itemRepository = new ItemRepositoryImpl();
+
+/*        int idOrder = 94;
+        int number = 333;
+        List<Item> items = new ArrayList<>();
+
+        for (int j = 1; j < 3; j++) {
+            items.add(itemRepository.get(j));
+        }
+        orders.add(new Order(idOrder, number, items));
+
+        int idOrder2 = 93;
+        int number2 = 75;
+        List<Item> items2 = new ArrayList<>();
+        for (int j = 1; j < 2; j++) {
+            items2.add(itemRepository.get(j));
+        }
+        orders.add(new Order(idOrder2, number2, items2));*/
+
+        int idOrder3 = 97;
+        int number3 = 9777;
+        List<Item> items3 = new ArrayList<>();
+        for (int j = 4; j < 6; j++) {
+            items3.add(itemRepository.get(j));
+        }
+        orders.add(new Order(idOrder3, number3, items3));
+
+
+        //
+        Buyer buyer = dtoMapper.buyerDTOToBuyer(new BuyerDTO(id, name, orders));
+        service.update(buyer);
     }
 }

@@ -21,6 +21,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     public static final String DELETE_ORDER_ITEMS = "DELETE FROM order_items WHERE id_order = %s and id_item=%s";
     public static final String DELETE_ORDER = "DELETE FROM orders WHERE id = %s ";
     public static final String DELETE_ORDER_FROM_ORDER_ITEMS = "DELETE FROM order_items WHERE id_order = %s";
+    public static final String DELETE_BUYER_ORDER_BY_ID_ORDER = "DELETE FROM buyer_order WHERE id_order = %s";
 
     OrderResultSetMapperImpl orderResultSetMapper = new OrderResultSetMapperImpl();
 
@@ -91,7 +92,12 @@ public class OrderRepositoryImpl implements OrderRepository {
         List<Integer> idOrders = getListFirstColumnInt(String.format(ORDERS_OF_BUYER, idBuyer));
         List<Order> orders = new ArrayList<>();
         for (int idOrder : idOrders) {
-            orders.add(get(idOrder));
+            Order order = get(idOrder);
+            if (order == null) {
+                sendSqlQuery(String.format(DELETE_BUYER_ORDER_BY_ID_ORDER, idOrder));
+            } else {
+                orders.add(order);
+            }
         }
         return orders;
     }

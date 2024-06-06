@@ -1,6 +1,7 @@
 package org.example.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Order {
     private int id;
@@ -44,5 +45,18 @@ public class Order {
                 ", number=" + number +
                 ", items=" + items +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return number == order.number && Objects.equals(items, order.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, items);
     }
 }

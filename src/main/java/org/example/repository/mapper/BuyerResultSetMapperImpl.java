@@ -15,10 +15,13 @@ public class BuyerResultSetMapperImpl implements BuyerResultSetMapper {
     public Buyer map(ResultSet resultSet) {
         Buyer buyer;
         try {
-            resultSet.next();
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            buyer = new Buyer(id, name, repository.getListOfBuyerOrdersById(id));
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                buyer = new Buyer(id, name, repository.getListOfBuyerOrdersById(id));
+            } else {
+                buyer = null;
+            }
         } catch (SQLException e) {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }

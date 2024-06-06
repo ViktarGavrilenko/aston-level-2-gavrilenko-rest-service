@@ -15,10 +15,13 @@ public class OrderResultSetMapperImpl implements OrderResultSetMapper {
     public Order map(ResultSet resultSet) {
         Order order;
         try {
-            resultSet.next();
-            int id = resultSet.getInt("id");
-            int number = resultSet.getInt("number");
-            order = new Order(id, number, repository.getListItemsInOrderById(id));
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int number = resultSet.getInt("number");
+                order = new Order(id, number, repository.getListItemsInOrderById(id));
+            } else {
+                order = null;
+            }
         } catch (SQLException e) {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }

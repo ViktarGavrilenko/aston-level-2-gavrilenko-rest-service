@@ -32,7 +32,9 @@ public class OrderServlet extends HttpServlet {
             printWriter.write(items.toString());
         } else {
             Order order = service.get(Integer.parseInt(str.substring(1)));
-            printWriter.write(order.toString());
+            if (order != null) {
+                printWriter.write(order.toString());
+            }
         }
         printWriter.close();
     }

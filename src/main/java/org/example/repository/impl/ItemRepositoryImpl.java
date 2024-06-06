@@ -15,8 +15,8 @@ public class ItemRepositoryImpl implements ItemRepository {
     public static final String ITEM_BY_NAME_AND_PRICE = "SELECT id, name, price FROM items where name='%s' and price=%s";
     public static final String ID_ITEMS = "SELECT id FROM items where 1";
     public static final String INSERT_ITEM = "INSERT INTO items(name, price) VALUES ('%s', %s)";
-    public static final String DELETE_ITEM_BY_ID = "DELETE FROM items where id = '%s'";
-    public static final String UPDATE_ITEM_BY_ID = "UPDATE items SET name='%s', price=%s where id = '%s'";
+    public static final String DELETE_ITEM_BY_ID = "DELETE FROM items where id = %s";
+    public static final String UPDATE_ITEM_BY_ID = "UPDATE items SET name='%s', price=%s where id = %s";
 
     ItemResultSetMapperImpl itemResultSetMapper = new ItemResultSetMapperImpl();
 

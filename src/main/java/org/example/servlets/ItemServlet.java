@@ -30,7 +30,9 @@ public class ItemServlet extends HttpServlet {
             printWriter.write(items.toString());
         } else {
             Item item = service.get(Integer.parseInt(str.substring(1)));
-            printWriter.write(item.toString());
+            if (item != null) {
+                printWriter.write(item.toString());
+            }
         }
         printWriter.close();
     }
