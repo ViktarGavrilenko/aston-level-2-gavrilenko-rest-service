@@ -44,31 +44,11 @@ public class BuyerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //
-
         int id = 50;
         String name = "SomeName";
-        List<Order> orders = new ArrayList<>();
-        List<Item> items = new ArrayList<>();
-        ItemRepositoryImpl itemRepository = new ItemRepositoryImpl();
-        items.add(itemRepository.get(3));
-        items.add(itemRepository.get(5));
-        orders.add(new Order(200, 300, items));
-        List<Item> items2 = new ArrayList<>();
-        items2.add(itemRepository.get(1));
-        items2.add(itemRepository.get(4));
-        orders.add(new Order(201, 301, items2));
-
-/*        for (int i = 1; i < 3; i++) {
-            int idOrder = i;
-            int number = (int) Math.random() * 20;
-            List<Item> items = new ArrayList<>();
-            ItemRepositoryImpl itemRepository = new ItemRepositoryImpl();
-            for (int j = 1; j < 4; j++) {
-                items.add(itemRepository.get(j));
-            }
-            orders.add(new Order(idOrder, number, items));
-        }*/
-
+        List<Integer> orders = new ArrayList<>();
+        orders.add(3);
+        orders.add(6);
         //
         Buyer buyer = dtoMapper.buyerDTOToBuyer(new BuyerDTO(id, name, orders));
         Buyer saved = service.save(buyer);
@@ -90,7 +70,7 @@ public class BuyerServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
         int id = 2;
         String name = "Дмитрий";
-        List<Order> orders = new ArrayList<>();
+        List<Integer> orders = new ArrayList<>();
         ItemRepositoryImpl itemRepository = new ItemRepositoryImpl();
 
 /*        int idOrder = 94;
@@ -116,7 +96,7 @@ public class BuyerServlet extends HttpServlet {
         for (int j = 4; j < 6; j++) {
             items3.add(itemRepository.get(j));
         }
-        orders.add(new Order(idOrder3, number3, items3));
+        orders.add(4);
 
 
         //

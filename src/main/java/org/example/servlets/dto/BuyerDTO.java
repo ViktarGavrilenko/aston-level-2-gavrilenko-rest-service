@@ -7,9 +7,9 @@ import java.util.List;
 public class BuyerDTO {
     private int id;
     private String name;
-    private List<Order> orders;
+    private List<Integer> orders;
 
-    public BuyerDTO(int id, String name, List<Order> orders) {
+    public BuyerDTO(int id, String name, List<Integer> orders) {
         this.id = id;
         this.name = name;
         this.orders = orders;
@@ -31,11 +31,11 @@ public class BuyerDTO {
         this.name = name;
     }
 
-    public List<Order> getOrders() {
+    public List<Integer> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<Integer> orders) {
         this.orders = orders;
     }
 }

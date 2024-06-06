@@ -1,8 +1,6 @@
 package org.example.servlets;
 
-import org.example.model.Item;
 import org.example.model.Order;
-import org.example.repository.impl.ItemRepositoryImpl;
 import org.example.services.impl.OrderServiceImpl;
 import org.example.servlets.dto.OrderDTO;
 import org.example.servlets.mapper.OrderDtoMapperImpl;
@@ -46,11 +44,10 @@ public class OrderServlet extends HttpServlet {
         //
         int id = (int) (Math.random() * 200);
         int number = (int) (Math.random() * 10);
-        List<Item> items = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            items.add(new Item(i, "something " + i, i + 8));
-        }
-        //
+        List<Integer> items = new ArrayList<>();
+        items.add(3);
+        items.add(1);
+        items.add(5);
         Order order = dtoMapper.orderDTOToOrder(new OrderDTO(id, number, items));
         Order saved = service.save(order);
         OrderDTO itemDTO = dtoMapper.orderToOrderDTO(saved);
@@ -68,11 +65,10 @@ public class OrderServlet extends HttpServlet {
         //
         int id = 1;
         int number = 1;
-        List<Item> items = new ArrayList<>();
-        ItemRepositoryImpl itemRepository = new ItemRepositoryImpl();
-        for (int i = 1; i < 2; i++) {
-            items.add(itemRepository.get(i));
-        }
+        List<Integer> items = new ArrayList<>();
+        items.add(3);
+        items.add(1);
+        items.add(5);
         //
         Order order = dtoMapper.orderDTOToOrder(new OrderDTO(id, number, items));
         service.update(order);

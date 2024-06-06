@@ -30,8 +30,8 @@ public class BuyerRepositoryImpl implements BuyerRepository {
             "DELETE FROM buyer_order WHERE id_order = %s;";
     public static final String UPDATE_BUYER_BY_ID = "UPDATE buyers SET name='%s' where id = '%s'";
 
-    BuyerResultSetMapperImpl buyerResultSetMapper = new BuyerResultSetMapperImpl();
-    OrderRepositoryImpl orderRepository = new OrderRepositoryImpl();
+    static BuyerResultSetMapperImpl buyerResultSetMapper = new BuyerResultSetMapperImpl();
+    static OrderRepositoryImpl orderRepository = new OrderRepositoryImpl();
 
     @Override
     public Buyer get(Integer id) {

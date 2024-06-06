@@ -1,15 +1,13 @@
 package org.example.servlets.dto;
 
-import org.example.model.Item;
-
 import java.util.List;
 
 public class OrderDTO {
     private int id;
     private int number;
-    private List<Item> items;
+    private List<Integer> items;
 
-    public OrderDTO(int id, int number, List<Item> items) {
+    public OrderDTO(int id, int number, List<Integer> items) {
         this.id = id;
         this.number = number;
         this.items = items;
@@ -31,12 +29,11 @@ public class OrderDTO {
         this.number = number;
     }
 
-    public List<Item> getItems() {
+    public List<Integer> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<Integer> items) {
         this.items = items;
     }
-
 }

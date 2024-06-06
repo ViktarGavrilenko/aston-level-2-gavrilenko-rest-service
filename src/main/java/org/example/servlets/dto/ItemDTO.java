@@ -8,9 +8,9 @@ public class ItemDTO {
     private int id;
     private String name;
     private int price;
-    private List<Order> orders;
+    private List<Integer> orders;
 
-    public ItemDTO(int id, String name, int price, List<Order> orders) {
+    public ItemDTO(int id, String name, int price, List<Integer> orders) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -41,11 +41,11 @@ public class ItemDTO {
         this.price = price;
     }
 
-    public List<Order> getOrders() {
+    public List<Integer> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<Integer> orders) {
         this.orders = orders;
     }
 }

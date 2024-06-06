@@ -25,7 +25,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     public static final String SELECT_ID_ORDERS_OF_ORDER_BY_ID_ITEM =
             "SELECT id_order FROM order_items WHERE id_item=%s;";
 
-    OrderResultSetMapperImpl orderResultSetMapper = new OrderResultSetMapperImpl();
+    static OrderResultSetMapperImpl orderResultSetMapper = new OrderResultSetMapperImpl();
 
     @Override
     public Order get(Integer id) {
@@ -108,7 +108,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         List<Integer> idOrders = getListFirstColumnInt(String.format(SELECT_ID_ORDERS_OF_ORDER_BY_ID_ITEM, idItem));
         List<Order> orders = new ArrayList<>();
         for (int idOrder : idOrders) {
-            Order order = orderResultSetMapper.map(sendSelectQuery(String.format(ORDER_BY_ID, idOrder)));
+            Order order = orderResultSetMapper.mapWithOutItems(sendSelectQuery(String.format(ORDER_BY_ID, idOrder)));
             orders.add(order);
         }
         return orders;

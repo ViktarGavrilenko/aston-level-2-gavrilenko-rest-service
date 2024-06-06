@@ -22,7 +22,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     public static final String DELETE_ORDER_ITEMS = "DELETE FROM order_items WHERE id_order = %s and id_item=%s";
     public static final String UPDATE_ITEM_BY_ID = "UPDATE items SET name='%s', price=%s where id = %s";
 
-    ItemResultSetMapperImpl itemResultSetMapper = new ItemResultSetMapperImpl();
+    static ItemResultSetMapperImpl itemResultSetMapper = new ItemResultSetMapperImpl();
 
     @Override
     public Item get(Integer id) {
@@ -87,7 +87,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         List<Integer> idItems = getListFirstColumnInt(String.format(SELECT_ID_ITEMS_OF_ORDER_BY_ID_ORDER, idOrder));
         List<Item> items = new ArrayList<>();
         for (int idItem : idItems) {
-            Item item = itemResultSetMapper.map(sendSelectQuery(String.format(ITEM_BY_ID, idItem)));
+            Item item = itemResultSetMapper.mapWithOutOrder(sendSelectQuery(String.format(ITEM_BY_ID, idItem)));
             items.add(item);
         }
         return items;

@@ -44,7 +44,9 @@ public class ItemServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         int price = Integer.parseInt(req.getParameter("price"));
-        List<Order> orders = new ArrayList<>(); //Заполнить orders
+        List<Integer> orders = new ArrayList<>();
+        orders.add(4);
+        orders.add(2);
         Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price, orders));
         Item saved = service.save(item);
         ItemDTO itemDTO = dtoMapper.itemToItemDTO(saved);
@@ -60,8 +62,9 @@ public class ItemServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         int price = Integer.parseInt(req.getParameter("price"));
-        List<Order> orders = new ArrayList<>();
-        Order order = new Order(200, 2005, )
+        List<Integer> orders = new ArrayList<>();
+        orders.add(4);
+        orders.add(2);
         Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price, orders));
         service.update(item);
     }
