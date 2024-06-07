@@ -7,6 +7,9 @@ public class OrderDTO {
     private int number;
     private List<Integer> items;
 
+    public OrderDTO() {
+    }
+
     public OrderDTO(int id, int number, List<Integer> items) {
         this.id = id;
         this.number = number;

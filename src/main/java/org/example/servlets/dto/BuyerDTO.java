@@ -1,13 +1,14 @@
 package org.example.servlets.dto;
 
-import org.example.model.Order;
-
 import java.util.List;
 
 public class BuyerDTO {
     private int id;
     private String name;
     private List<Integer> orders;
+
+    public BuyerDTO() {
+    }
 
     public BuyerDTO(int id, String name, List<Integer> orders) {
         this.id = id;

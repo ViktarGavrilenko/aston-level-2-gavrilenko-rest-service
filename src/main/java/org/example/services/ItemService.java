@@ -1,6 +1,5 @@
 package org.example.services;
 
-import org.example.model.Buyer;
 import org.example.model.Item;
 
 import java.util.List;

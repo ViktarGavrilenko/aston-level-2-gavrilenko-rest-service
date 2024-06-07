@@ -1,5 +1,6 @@
 package org.example.servlets;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.Order;
 import org.example.services.impl.OrderServiceImpl;
 import org.example.servlets.dto.OrderDTO;
@@ -10,67 +11,51 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.utils.StreamUtils.getJsonFromRequest;
+
 @WebServlet(name = "OrderServlet", value = "/order/*")
 public class OrderServlet extends HttpServlet {
-    OrderServiceImpl service = new OrderServiceImpl();
-    private OrderDtoMapperImpl dtoMapper = new OrderDtoMapperImpl();
+    private static OrderServiceImpl service = new OrderServiceImpl();
+    private static OrderDtoMapperImpl dtoMapper = new OrderDtoMapperImpl();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         String str = req.getPathInfo();
-        PrintWriter printWriter = resp.getWriter();
         if (str == null) {
-            List<Order> items = service.getAll();
-            printWriter.write(items.toString());
+            List<Order> orders = service.getAll();
+            List<OrderDTO> orderDTOS = new ArrayList<>();
+            for (Order order : orders) {
+                orderDTOS.add(dtoMapper.orderToOrderDTO(order));
+            }
+
         } else {
             Order order = service.get(Integer.parseInt(str.substring(1)));
             if (order != null) {
-                printWriter.write(order.toString());
+                OrderDTO orderDTO = dtoMapper.orderToOrderDTO(order);
             }
         }
-        printWriter.close();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-/*        int number = Integer.parseInt(req.getParameter("number"));
-        List<Item> items = (List<Item>) req.getAttribute("items");*/
-        //
-        int id = (int) (Math.random() * 200);
-        int number = (int) (Math.random() * 10);
-        List<Integer> items = new ArrayList<>();
-        items.add(3);
-        items.add(1);
-        items.add(5);
-        Order order = dtoMapper.orderDTOToOrder(new OrderDTO(id, number, items));
+        String json = getJsonFromRequest(req);
+        OrderDTO dto = MAPPER.readValue(json, OrderDTO.class);
+        Order order = dtoMapper.orderDTOToOrder(dto);
         Order saved = service.save(order);
         OrderDTO itemDTO = dtoMapper.orderToOrderDTO(saved);
-
-        resp.setContentType("text/html");
-        resp.setCharacterEncoding("UTF-8");
-        PrintWriter printWriter = resp.getWriter();
-        printWriter.write(itemDTO.toString());
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
-        /*        int number = Integer.parseInt(req.getParameter("number"));
-        List<Item> items = (List<Item>) req.getAttribute("items");*/
-        //
-        int id = 1;
-        int number = 1;
-        List<Integer> items = new ArrayList<>();
-        items.add(3);
-        items.add(1);
-        items.add(5);
-        //
-        Order order = dtoMapper.orderDTOToOrder(new OrderDTO(id, number, items));
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String json = getJsonFromRequest(req);
+        OrderDTO dto = MAPPER.readValue(json, OrderDTO.class);
+        Order order = dtoMapper.orderDTOToOrder(dto);
         service.update(order);
     }
 

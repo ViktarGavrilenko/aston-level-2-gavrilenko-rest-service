@@ -1,7 +1,7 @@
 package org.example.servlets;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.Item;
-import org.example.model.Order;
 import org.example.services.impl.ItemServiceImpl;
 import org.example.servlets.dto.ItemDTO;
 import org.example.servlets.mapper.ItemDtoMapperImpl;
@@ -12,65 +12,55 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.utils.StreamUtils.getJsonFromRequest;
+
 @WebServlet(name = "ItemServlet", value = "/item/*")
 public class ItemServlet extends HttpServlet {
-    private ItemServiceImpl service = new ItemServiceImpl();
-    private ItemDtoMapperImpl dtoMapper = new ItemDtoMapperImpl();
+    private static ItemServiceImpl service = new ItemServiceImpl();
+    private static ItemDtoMapperImpl dtoMapper = new ItemDtoMapperImpl();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         String str = req.getPathInfo();
-        PrintWriter printWriter = resp.getWriter();
         if (str == null) {
             List<Item> items = service.getAll();
-            printWriter.write(items.toString());
+            List<ItemDTO> itemDTOS = new ArrayList<>();
+            for (Item item : items) {
+                itemDTOS.add(dtoMapper.itemToItemDTO(item));
+            }
         } else {
             Item item = service.get(Integer.parseInt(str.substring(1)));
             if (item != null) {
-                printWriter.write(item.toString());
+                ItemDTO itemDTO = dtoMapper.itemToItemDTO(item);
             }
         }
-        printWriter.close();
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        String name = req.getParameter("name");
-        int price = Integer.parseInt(req.getParameter("price"));
-        List<Integer> orders = new ArrayList<>();
-        orders.add(4);
-        orders.add(2);
-        Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price, orders));
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String json = getJsonFromRequest(req);
+        ItemDTO dto = MAPPER.readValue(json, ItemDTO.class);
+        Item item = dtoMapper.itemDTOToItem(dto);
         Item saved = service.save(item);
         ItemDTO itemDTO = dtoMapper.itemToItemDTO(saved);
-
-        resp.setContentType("text/html");
-        resp.setCharacterEncoding("UTF-8");
-        PrintWriter printWriter = resp.getWriter();
-        printWriter.write(itemDTO.toString());
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        String name = req.getParameter("name");
-        int price = Integer.parseInt(req.getParameter("price"));
-        List<Integer> orders = new ArrayList<>();
-        orders.add(4);
-        orders.add(2);
-        Item item = dtoMapper.itemDTOToItem(new ItemDTO(id, name, price, orders));
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String json = getJsonFromRequest(req);
+        ItemDTO dto = MAPPER.readValue(json, ItemDTO.class);
+        Item item = dtoMapper.itemDTOToItem(dto);
         service.update(item);
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("id"));
         service.delete(id);
     }

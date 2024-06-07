@@ -56,8 +56,12 @@ public class BuyerRepositoryImpl implements BuyerRepository {
                     sendSelectQuery(String.format(BUYER_BY_NAME, buyer.getName()))).getId();
             List<Order> orders = buyer.getOrders();
             for (Order order : orders) {
-                Order saveOrder = orderRepository.save(order);
-                sendSqlQuery(String.format(INSERT_BUYER_ORDERS, idBuyer, saveOrder.getId()));
+                if (orderRepository.get(order.getId()) == null) {
+                    Order saveOrder = orderRepository.save(order);
+                    sendSqlQuery(String.format(INSERT_BUYER_ORDERS, idBuyer, saveOrder.getId()));
+                } else {
+                    sendSqlQuery(String.format(INSERT_BUYER_ORDERS, idBuyer, order.getId()));
+                }
                 setAutoCommitFalse();
             }
             completeTransaction();

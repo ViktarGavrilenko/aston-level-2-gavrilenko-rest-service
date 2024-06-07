@@ -1,7 +1,5 @@
 package org.example.servlets.dto;
 
-import org.example.model.Order;
-
 import java.util.List;
 
 public class ItemDTO {
@@ -9,6 +7,9 @@ public class ItemDTO {
     private String name;
     private int price;
     private List<Integer> orders;
+
+    public ItemDTO() {
+    }
 
     public ItemDTO(int id, String name, int price, List<Integer> orders) {
         this.id = id;

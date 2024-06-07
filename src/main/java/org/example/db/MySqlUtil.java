@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Properties;
 
 public class MySqlUtil {
+    private MySqlUtil() {
+    }
+
     private static final String FILE_NOT_FOUND = "File not found. ";
     protected static final Properties configProperties;
 
@@ -45,29 +48,6 @@ public class MySqlUtil {
                 throw new IllegalArgumentException(CONNECTION_FAILED, e);
             }
         }
-    }
-
-    public static String getFirstColumn(String sqlQuery) {
-        try {
-            ResultSet resultSet = sendSelectQuery(sqlQuery);
-            resultSet.next();
-            return resultSet.getString(1);
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(sqlQuery + " " + SQL_QUERY_FAILED, e);
-        }
-    }
-
-    public static List<String> getListFirstColumnStr(String selectStr) {
-        ResultSet resultSet = sendSelectQuery(selectStr);
-        List<String> listFirstColumn = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                listFirstColumn.add(resultSet.getString(1));
-            }
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
-        }
-        return listFirstColumn;
     }
 
     public static List<Integer> getListFirstColumnInt(String selectStr) {
