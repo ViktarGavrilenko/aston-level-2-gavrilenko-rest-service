@@ -6,7 +6,6 @@ import org.example.services.impl.ItemServiceImpl;
 import org.example.servlets.dto.ItemDTO;
 import org.example.servlets.mapper.ItemDtoMapperImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.utils.StreamUtils.getJsonFromRequest;
+import static org.example.utils.StreamUtils.getTextFromInputStream;
 
 @WebServlet(name = "ItemServlet", value = "/item/*")
 public class ItemServlet extends HttpServlet {
@@ -44,7 +43,7 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = getJsonFromRequest(req);
+        String json = getTextFromInputStream(req.getInputStream());
         ItemDTO dto = MAPPER.readValue(json, ItemDTO.class);
         Item item = dtoMapper.itemDTOToItem(dto);
         Item saved = service.save(item);
@@ -53,7 +52,7 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = getJsonFromRequest(req);
+        String json = getTextFromInputStream(req.getInputStream());
         ItemDTO dto = MAPPER.readValue(json, ItemDTO.class);
         Item item = dtoMapper.itemDTOToItem(dto);
         service.update(item);

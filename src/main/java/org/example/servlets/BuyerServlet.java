@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.utils.StreamUtils.getJsonFromRequest;
+import static org.example.utils.StreamUtils.getTextFromInputStream;
 
 @WebServlet(name = "BuyerServlet", value = "/buyer/*")
 public class BuyerServlet extends HttpServlet {
@@ -45,7 +45,7 @@ public class BuyerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = getJsonFromRequest(req);
+        String json = getTextFromInputStream(req.getInputStream());
         BuyerDTO dto = MAPPER.readValue(json, BuyerDTO.class);
 
         Buyer buyer = dtoMapper.buyerDTOToBuyer(dto);
@@ -61,7 +61,7 @@ public class BuyerServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = getJsonFromRequest(req);
+        String json = getTextFromInputStream(req.getInputStream());
         BuyerDTO dto = MAPPER.readValue(json, BuyerDTO.class);
         Buyer buyer = dtoMapper.buyerDTOToBuyer(dto);
         service.update(buyer);

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
-    private final DBConnectionProvider connectionProvider;
+    private final DBConnectionProviderOld connectionProvider;
 
-    public CustomerService(DBConnectionProvider connectionProvider) {
+    public CustomerService(DBConnectionProviderOld connectionProvider) {
         this.connectionProvider = connectionProvider;
         createCustomersTableIfNotExists();
     }
@@ -52,9 +52,8 @@ public class CustomerService {
             PreparedStatement pstmt = conn.prepareStatement(
                     """
                     create table if not exists customers (
-                        id bigint not null,
-                        name varchar not null,
-                        primary key (id)
+                        id bigint not null PRIMARY KEY,
+                        name varchar(255) not null
                     )
                     """
             );

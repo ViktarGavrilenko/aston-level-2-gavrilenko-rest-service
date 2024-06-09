@@ -1,48 +1,54 @@
 package db;
 
+import org.example.db.DBConnectionProvider;
+import org.example.model.Buyer;
+import org.example.model.Order;
+import org.example.repository.impl.BuyerRepositoryImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.MySQLContainer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DBTest {
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            "postgres:15-alpine"
+    static MySQLContainer<?> mySQLContainer = new MySQLContainer<>(
+            "mysql:8"
     );
 
-    CustomerService customerService;
+    BuyerRepositoryImpl buyerRepository;
 
     @BeforeAll
     static void beforeAll() {
-        postgres.start();
+        mySQLContainer.start();
     }
 
     @AfterAll
     static void afterAll() {
-        postgres.stop();
+        mySQLContainer.stop();
     }
 
     @BeforeEach
     void setUp() {
         DBConnectionProvider connectionProvider = new DBConnectionProvider(
-                postgres.getJdbcUrl(),
-                postgres.getUsername(),
-                postgres.getPassword()
+                mySQLContainer.getJdbcUrl(),
+                mySQLContainer.getUsername(),
+                mySQLContainer.getPassword()
         );
-        customerService = new CustomerService(connectionProvider);
+        buyerRepository = new BuyerRepositoryImpl(connectionProvider);
     }
 
     @Test
     void shouldGetCustomers() {
-        customerService.createCustomer(new Customer(1L, "George"));
-        customerService.createCustomer(new Customer(2L, "John"));
+        List<Order> orders = new ArrayList<>();
 
-        List<Customer> customers = customerService.getAllCustomers();
-        assertEquals(2, customers.size());
+        buyerRepository.save(new Buyer(1, "Виктор", orders));
+
+        List<Buyer> buyers = buyerRepository.getAll();
+        assertEquals(1, buyers.size());
     }
 }

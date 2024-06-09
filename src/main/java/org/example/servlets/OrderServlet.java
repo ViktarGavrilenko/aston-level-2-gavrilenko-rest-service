@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.utils.StreamUtils.getJsonFromRequest;
+import static org.example.utils.StreamUtils.getTextFromInputStream;
 
 @WebServlet(name = "OrderServlet", value = "/order/*")
 public class OrderServlet extends HttpServlet {
@@ -44,7 +44,7 @@ public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = getJsonFromRequest(req);
+        String json = getTextFromInputStream(req.getInputStream());
         OrderDTO dto = MAPPER.readValue(json, OrderDTO.class);
         Order order = dtoMapper.orderDTOToOrder(dto);
         Order saved = service.save(order);
@@ -53,7 +53,7 @@ public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = getJsonFromRequest(req);
+        String json = getTextFromInputStream(req.getInputStream());
         OrderDTO dto = MAPPER.readValue(json, OrderDTO.class);
         Order order = dtoMapper.orderDTOToOrder(dto);
         service.update(order);

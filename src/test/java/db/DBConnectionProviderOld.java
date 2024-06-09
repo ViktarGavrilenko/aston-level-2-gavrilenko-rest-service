@@ -3,12 +3,12 @@ package db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class DBConnectionProvider {
+public class DBConnectionProviderOld {
     private final String url;
     private final String username;
     private final String password;
 
-    public DBConnectionProvider(String url, String username, String password) {
+    public DBConnectionProviderOld(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;

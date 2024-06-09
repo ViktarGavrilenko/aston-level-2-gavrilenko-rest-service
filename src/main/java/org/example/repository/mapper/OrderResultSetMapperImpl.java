@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static org.example.db.MySqlUtil.SQL_QUERY_FAILED;
+import static org.example.db.DBConnectionProvider.SQL_QUERY_FAILED;
 
 public class OrderResultSetMapperImpl implements OrderResultSetMapper {
     ItemRepositoryImpl repository = new ItemRepositoryImpl();

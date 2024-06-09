@@ -6,7 +6,7 @@ import org.example.repository.impl.OrderRepositoryImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.example.db.MySqlUtil.SQL_QUERY_FAILED;
+import static org.example.db.DBConnectionProvider.SQL_QUERY_FAILED;
 
 public class BuyerResultSetMapperImpl implements BuyerResultSetMapper {
     OrderRepositoryImpl repository = new OrderRepositoryImpl();

@@ -1,5 +1,6 @@
 package org.example.repository.impl;
 
+import org.example.db.DBConnectionProvider;
 import org.example.model.Buyer;
 import org.example.model.Order;
 import org.example.repository.BuyerRepository;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.db.MySqlUtil.*;
+import static org.example.db.DBConnectionProvider.*;
 
 public class BuyerRepositoryImpl implements BuyerRepository {
     public static final String ID_BUYERS = "SELECT id FROM buyers where 1";
@@ -33,14 +34,24 @@ public class BuyerRepositoryImpl implements BuyerRepository {
     static BuyerResultSetMapperImpl buyerResultSetMapper = new BuyerResultSetMapperImpl();
     static OrderRepositoryImpl orderRepository = new OrderRepositoryImpl();
 
+    DBConnectionProvider connectionProvider;
+
+    public BuyerRepositoryImpl(DBConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
+    }
+
+    public BuyerRepositoryImpl() {
+        this.connectionProvider = new DBConnectionProvider();
+    }
+
     @Override
     public Buyer get(Integer id) {
-        return buyerResultSetMapper.map(sendSelectQuery(String.format(SELECT_BUYERS, id)));
+        return buyerResultSetMapper.map(connectionProvider.sendSelectQuery(String.format(SELECT_BUYERS, id)));
     }
 
     @Override
     public List<Buyer> getAll() {
-        List<Integer> idBuyers = getListFirstColumnInt(ID_BUYERS);
+        List<Integer> idBuyers = connectionProvider.getListFirstColumnInt(ID_BUYERS);
         List<Buyer> buyers = new ArrayList<>();
         for (int idBuyer : idBuyers) {
             buyers.add(get(idBuyer));
@@ -50,33 +61,33 @@ public class BuyerRepositoryImpl implements BuyerRepository {
 
     @Override
     public Buyer save(Buyer buyer) {
-        setAutoCommitFalse();
-        if (sendSqlQuery(String.format(INSERT_BUYER, buyer.getName()))) {
+        connectionProvider.setAutoCommitFalse();
+        if (connectionProvider.sendSqlQuery(String.format(INSERT_BUYER, buyer.getName()))) {
             int idBuyer = buyerResultSetMapper.map(
-                    sendSelectQuery(String.format(BUYER_BY_NAME, buyer.getName()))).getId();
+                    connectionProvider.sendSelectQuery(String.format(BUYER_BY_NAME, buyer.getName()))).getId();
             List<Order> orders = buyer.getOrders();
             for (Order order : orders) {
                 if (orderRepository.get(order.getId()) == null) {
                     Order saveOrder = orderRepository.save(order);
-                    sendSqlQuery(String.format(INSERT_BUYER_ORDERS, idBuyer, saveOrder.getId()));
+                    connectionProvider.sendSqlQuery(String.format(INSERT_BUYER_ORDERS, idBuyer, saveOrder.getId()));
                 } else {
-                    sendSqlQuery(String.format(INSERT_BUYER_ORDERS, idBuyer, order.getId()));
+                    connectionProvider.sendSqlQuery(String.format(INSERT_BUYER_ORDERS, idBuyer, order.getId()));
                 }
-                setAutoCommitFalse();
+                connectionProvider.setAutoCommitFalse();
             }
-            completeTransaction();
-            setAutoCommitTrue();
+            connectionProvider.completeTransaction();
+            connectionProvider.setAutoCommitTrue();
             return buyer;
         } else {
-            setAutoCommitTrue();
+            connectionProvider.setAutoCommitTrue();
             throw new IllegalArgumentException(SQL_QUERY_FAILED);
         }
     }
 
     @Override
     public void update(Buyer buyer) {
-        setAutoCommitFalse();
-        sendSqlQuery(String.format(UPDATE_BUYER_BY_ID, buyer.getName(), buyer.getId()));
+        connectionProvider.setAutoCommitFalse();
+        connectionProvider.sendSqlQuery(String.format(UPDATE_BUYER_BY_ID, buyer.getName(), buyer.getId()));
         List<Order> newOrder = buyer.getOrders();
         List<Order> oldOrder = get(buyer.getId()).getOrders();
         List<Order> listOrderForAdd = new ArrayList<>(newOrder);
@@ -84,24 +95,24 @@ public class BuyerRepositoryImpl implements BuyerRepository {
         List<Order> listOrderForDelete = new ArrayList<>(oldOrder);
         listOrderForDelete.removeAll(newOrder);
         for (Order order : listOrderForDelete) {
-            sendSqlQuery(String.format(DELETE_ORDER_OF_BUYER_FROM_BUYER_ORDER_BY_ID_ORDER, order.getId()));
+            connectionProvider.sendSqlQuery(String.format(DELETE_ORDER_OF_BUYER_FROM_BUYER_ORDER_BY_ID_ORDER, order.getId()));
             orderRepository.delete(order.getId());
         }
         updateNewOrders(listOrderForAdd, buyer);
-        completeTransaction();
-        setAutoCommitTrue();
+        connectionProvider.completeTransaction();
+        connectionProvider.setAutoCommitTrue();
     }
 
     private void updateNewOrders(List<Order> listOrderForAdd, Buyer buyer) {
         for (Order order : listOrderForAdd) {
             if (orderRepository.get(order.getId()) == null) {
                 Order addOrder = orderRepository.save(order);
-                sendSqlQuery(String.format(INSERT_BUYER_ORDERS, buyer.getId(), addOrder.getId()));
+                connectionProvider.sendSqlQuery(String.format(INSERT_BUYER_ORDERS, buyer.getId(), addOrder.getId()));
             } else {
-                ResultSet resultSet = sendSelectQuery(String.format(BUYER_ORDER_BY_ID_BUYER_AND_ID_ORDER, buyer.getId(), order.getId()));
+                ResultSet resultSet = connectionProvider.sendSelectQuery(String.format(BUYER_ORDER_BY_ID_BUYER_AND_ID_ORDER, buyer.getId(), order.getId()));
                 try {
                     if (!resultSet.next()) {
-                        sendSqlQuery(String.format(INSERT_BUYER_ORDERS, buyer.getId(), order.getId()));
+                        connectionProvider.sendSqlQuery(String.format(INSERT_BUYER_ORDERS, buyer.getId(), order.getId()));
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -109,20 +120,20 @@ public class BuyerRepositoryImpl implements BuyerRepository {
                 orderRepository.update(order);
             }
         }
-        setAutoCommitFalse();
+        connectionProvider.setAutoCommitFalse();
     }
 
     @Override
     public void delete(Integer id) {
-        setAutoCommitFalse();
-        sendSqlQuery(String.format(DELETE_BUYER_BY_ID, id));
+        connectionProvider.setAutoCommitFalse();
+        connectionProvider.sendSqlQuery(String.format(DELETE_BUYER_BY_ID, id));
         List<Order> orderList = orderRepository.getListOfBuyerOrdersById(id);
         for (Order order : orderList) {
             orderRepository.delete(order.getId());
-            setAutoCommitFalse();
+            connectionProvider.setAutoCommitFalse();
         }
-        sendSqlQuery(String.format(DELETE_ORDER_OF_BUYER_FROM_BUYER_ORDER, id));
-        completeTransaction();
-        setAutoCommitTrue();
+        connectionProvider.sendSqlQuery(String.format(DELETE_ORDER_OF_BUYER_FROM_BUYER_ORDER, id));
+        connectionProvider.completeTransaction();
+        connectionProvider.setAutoCommitTrue();
     }
 }

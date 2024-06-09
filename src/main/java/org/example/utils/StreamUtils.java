@@ -1,7 +1,7 @@
 package org.example.utils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -9,10 +9,10 @@ public class StreamUtils {
     private StreamUtils() {
     }
 
-    public static String getJsonFromRequest(HttpServletRequest request) throws IOException {
-        Scanner scanner = new Scanner(request.getInputStream(), StandardCharsets.UTF_8);
-        String jsonData = scanner.useDelimiter("\\A").next();
+    public static String getTextFromInputStream(InputStream stream) throws IOException {
+        Scanner scanner = new Scanner(stream, StandardCharsets.UTF_8);
+        String text = scanner.useDelimiter("\\A").next();
         scanner.close();
-        return jsonData;
+        return text;
     }
 }
