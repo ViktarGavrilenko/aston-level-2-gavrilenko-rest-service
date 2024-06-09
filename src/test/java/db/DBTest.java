@@ -46,7 +46,7 @@ public class DBTest {
     void shouldGetCustomers() {
         List<Order> orders = new ArrayList<>();
 
-        buyerRepository.save(new Buyer(1, "Виктор", orders));
+        buyerRepository.save(new Buyer(1, "Иван", orders));
 
         List<Buyer> buyers = buyerRepository.getAll();
         assertEquals(1, buyers.size());
