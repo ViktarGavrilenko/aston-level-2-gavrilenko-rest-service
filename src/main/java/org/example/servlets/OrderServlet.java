@@ -23,7 +23,7 @@ public class OrderServlet extends HttpServlet {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         String str = req.getPathInfo();
