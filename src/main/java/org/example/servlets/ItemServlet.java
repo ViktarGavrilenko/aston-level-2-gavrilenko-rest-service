@@ -18,9 +18,9 @@ import static org.example.utils.StreamUtils.getTextFromInputStream;
 
 @WebServlet(name = "ItemServlet", value = "/item/*")
 public class ItemServlet extends HttpServlet {
-    private static ItemServiceImpl service = new ItemServiceImpl();
-    private static ItemDtoMapperImpl dtoMapper = new ItemDtoMapperImpl();
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private ItemServiceImpl service = new ItemServiceImpl();
+    private ItemDtoMapperImpl dtoMapper = new ItemDtoMapperImpl();
+    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {

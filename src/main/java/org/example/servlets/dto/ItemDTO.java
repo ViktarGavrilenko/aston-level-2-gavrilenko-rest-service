@@ -1,6 +1,7 @@
 package org.example.servlets.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ItemDTO {
     private int id;
@@ -48,5 +49,18 @@ public class ItemDTO {
 
     public void setOrders(List<Integer> orders) {
         this.orders = orders;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemDTO itemDTO = (ItemDTO) o;
+        return price == itemDTO.price && Objects.equals(name, itemDTO.name) && Objects.equals(orders, itemDTO.orders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price, orders);
     }
 }

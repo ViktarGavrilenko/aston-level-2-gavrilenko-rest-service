@@ -18,23 +18,22 @@ import static org.example.utils.StreamUtils.getTextFromInputStream;
 
 @WebServlet(name = "BuyerServlet", value = "/buyer/*")
 public class BuyerServlet extends HttpServlet {
-    private static BuyerServiceImpl buyerService = new BuyerServiceImpl();
-    private static BuyerDtoMapperImpl dtoMapper = new BuyerDtoMapperImpl();
-    private static BuyerServiceImpl service = new BuyerServiceImpl();
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private BuyerServiceImpl buyerService = new BuyerServiceImpl();
+    private BuyerDtoMapperImpl dtoMapper = new BuyerDtoMapperImpl();
+    private BuyerServiceImpl service = new BuyerServiceImpl();
+    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         String str = req.getPathInfo();
         if (str == null) {
             List<Buyer> buyers = buyerService.getAll();
             List<BuyerDTO> buyerDTOS = new ArrayList<>();
-            for (Buyer buyerDTO : buyers) {
-                buyerDTOS.add(dtoMapper.buyerToBuyerDTO(buyerDTO));
+            for (Buyer buyer : buyers) {
+                buyerDTOS.add(dtoMapper.buyerToBuyerDTO(buyer));
             }
-
         } else {
             Buyer buyer = buyerService.get(Integer.parseInt(str.substring(1)));
             if (buyer != null) {
