@@ -1,10 +1,10 @@
 package org.example.servlets;
 
-import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.example.model.Buyer;
 import org.example.services.impl.BuyerServiceImpl;
 import org.example.servlets.dto.BuyerDTO;
 import org.example.servlets.mapper.BuyerDtoMapperImpl;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,13 +12,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.example.services.impl.BuyerServiceImplTest.buyerList;
 import static org.example.services.impl.BuyerServiceImplTest.getTemplateBuyer;
@@ -63,33 +62,58 @@ class OrderServletTest {
     }
 
     @Test
-    void doPost() throws IOException {
-/*        protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-            String json = getTextFromInputStream(req.getInputStream());
-            BuyerDTO dto = MAPPER.readValue(json, BuyerDTO.class);
-
-            Buyer buyer = dtoMapper.buyerDTOToBuyer(dto);
-            Buyer saved = service.save(buyer);
-            BuyerDTO buyerDTO = dtoMapper.buyerToBuyerDTO(saved);
-        }*/
-        String initialString = "{\n" +
-                "  \"id\": 0,\n" +
-                "  \"name\": \"Илья\",\n" +
-                "  \"orders\": [\n" +
-                "    1,\n" +
-                "    2,\n" +
-                "    3\n" +
-                "  ]\n" +
-                "}";
-        InputStream inputStream = new ByteArrayInputStream(initialString.getBytes());
-        when(request.getInputStream()).thenReturn((ServletInputStream) inputStream);
+    void doPostTest() throws IOException {
+        ServletInputStream servletInputStream = getServletInputStream(getTextFromInputStream(
+                OrderServletTest.class.getClassLoader().getResourceAsStream("buyer.json")));
+        when(request.getInputStream()).thenReturn(servletInputStream);
+        when(buyerService.save(any(Buyer.class))).thenReturn(getTemplateBuyer(1));
+        when(dtoMapper.buyerDTOToBuyer(any(BuyerDTO.class))).thenReturn(getTemplateBuyer(1));
+        buyerServlet.doPost(request, response);
+        Mockito.verify(dtoMapper, times(1)).buyerDTOToBuyer(any(BuyerDTO.class));
+        Mockito.verify(dtoMapper, times(1)).buyerToBuyerDTO(any(Buyer.class));
     }
 
     @Test
-    void doPut() {
+    void doPutTest() throws IOException {
+        ServletInputStream servletInputStream = getServletInputStream(getTextFromInputStream(
+                OrderServletTest.class.getClassLoader().getResourceAsStream("buyer.json")));
+        when(request.getInputStream()).thenReturn(servletInputStream);
+        buyerServlet.doPut(request, response);
+        Mockito.verify(dtoMapper, times(1)).buyerDTOToBuyer(any(BuyerDTO.class));
+        Mockito.verify(buyerService, times(1)).update(any());
+
     }
 
     @Test
-    void doDelete() {
+    void doDeleteTest() {
+        when(request.getParameter("id")).thenReturn("1");
+        buyerServlet.doDelete(request, response);
+        Mockito.verify(buyerService, times(1)).delete(1);
+    }
+
+    private static @NotNull ServletInputStream getServletInputStream(String body) {
+        ByteArrayInputStream textBody = new ByteArrayInputStream(body.getBytes());
+        ServletInputStream servletInputStream = new ServletInputStream() {
+            @Override
+            public boolean isFinished() {
+                return false;
+            }
+
+            @Override
+            public boolean isReady() {
+                return false;
+            }
+
+            @Override
+            public void setReadListener(ReadListener readListener) {
+
+            }
+
+            @Override
+            public int read() {
+                return textBody.read();
+            }
+        };
+        return servletInputStream;
     }
 }

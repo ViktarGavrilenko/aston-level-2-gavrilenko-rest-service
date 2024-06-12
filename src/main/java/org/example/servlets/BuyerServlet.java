@@ -20,8 +20,7 @@ import static org.example.utils.StreamUtils.getTextFromInputStream;
 public class BuyerServlet extends HttpServlet {
     private BuyerServiceImpl buyerService = new BuyerServiceImpl();
     private BuyerDtoMapperImpl dtoMapper = new BuyerDtoMapperImpl();
-    private BuyerServiceImpl service = new BuyerServiceImpl();
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -45,24 +44,24 @@ public class BuyerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String json = getTextFromInputStream(req.getInputStream());
-        BuyerDTO dto = MAPPER.readValue(json, BuyerDTO.class);
+        BuyerDTO dto = mapper.readValue(json, BuyerDTO.class);
 
         Buyer buyer = dtoMapper.buyerDTOToBuyer(dto);
-        Buyer saved = service.save(buyer);
+        Buyer saved = buyerService.save(buyer);
         BuyerDTO buyerDTO = dtoMapper.buyerToBuyerDTO(saved);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("id"));
-        service.delete(id);
+        buyerService.delete(id);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String json = getTextFromInputStream(req.getInputStream());
-        BuyerDTO dto = MAPPER.readValue(json, BuyerDTO.class);
+        BuyerDTO dto = mapper.readValue(json, BuyerDTO.class);
         Buyer buyer = dtoMapper.buyerDTOToBuyer(dto);
-        service.update(buyer);
+        buyerService.update(buyer);
     }
 }
