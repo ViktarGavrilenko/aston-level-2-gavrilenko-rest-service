@@ -8,6 +8,9 @@ public class Buyer {
     private String name;
     private List<Order> orders;
 
+    public Buyer() {
+    }
+
     public Buyer(int id, String name, List<Order> orders) {
         this.id = id;
         this.orders = orders;

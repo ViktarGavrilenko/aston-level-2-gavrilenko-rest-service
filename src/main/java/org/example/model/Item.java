@@ -10,6 +10,9 @@ public class Item {
     private int price;
     private List<Order> orders;
 
+    public Item() {
+    }
+
     public Item(int id, String name, int price, List<Order> orders) {
         this.id = id;
         this.name = name;

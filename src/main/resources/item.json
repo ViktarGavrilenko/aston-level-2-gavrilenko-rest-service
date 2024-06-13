@@ -1,10 +1,12 @@
 {
   "id": 0,
-  "name": "Трактор",
+  "name": "SomeItem",
   "price": 1,
   "orders": [
-    1,
-    2,
-    3
+    {
+      "id": 0,
+      "number": 25,
+      "items": []
+    }
   ]
 }

@@ -8,6 +8,9 @@ public class Order {
     private int number;
     private List<Item> items;
 
+    public Order() {
+    }
+
     public Order(int id, int number, List<Item> items) {
         this.id = id;
         this.number = number;

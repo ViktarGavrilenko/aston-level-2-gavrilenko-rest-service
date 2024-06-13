@@ -77,7 +77,7 @@ public class BuyerRepositoryImpl implements BuyerRepository {
             }
             connectionProvider.completeTransaction();
             connectionProvider.setAutoCommitTrue();
-            return buyer;
+            return get(idBuyer);
         } else {
             connectionProvider.setAutoCommitTrue();
             throw new IllegalArgumentException(SQL_QUERY_FAILED);
