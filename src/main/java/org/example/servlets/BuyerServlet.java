@@ -45,7 +45,6 @@ public class BuyerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String json = getTextFromInputStream(req.getInputStream());
         BuyerDTO dto = mapper.readValue(json, BuyerDTO.class);
-
         Buyer buyer = dtoMapper.buyerDTOToBuyer(dto);
         Buyer saved = buyerService.save(buyer);
         BuyerDTO buyerDTO = dtoMapper.buyerToBuyerDTO(saved);

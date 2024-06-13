@@ -17,21 +17,20 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ItemServiceImplTest {
-
+public class ItemServiceImplTest {
     @Mock
     private ItemRepositoryImpl itemRepository;
     @InjectMocks
     private ItemServiceImpl itemService;
 
-    private Item getTemplateItem(int id) {
+    public static Item getTemplateItem(int id) {
         List<Order> orders = new ArrayList<>();
         Order order = new Order(id, id, new ArrayList<>());
         orders.add(order);
         return new Item(id, "name" + id, id * 3, orders);
     }
 
-    private List<Item> itemList(int size) {
+    public static List<Item> itemList(int size) {
         List<Item> itemList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             itemList.add(getTemplateItem(i));

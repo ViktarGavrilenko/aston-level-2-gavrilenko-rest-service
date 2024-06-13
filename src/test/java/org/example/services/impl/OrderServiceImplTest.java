@@ -17,22 +17,21 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class OrderServiceImplTest {
-
+public class OrderServiceImplTest {
     @Mock
-    OrderRepositoryImpl orderRepository;
+    private OrderRepositoryImpl orderRepository;
 
     @InjectMocks
-    OrderServiceImpl orderService;
+    private OrderServiceImpl orderService;
 
-    private Order getTemplateOrder(int id) {
+    public static Order getTemplateOrder(int id) {
         List<Item> items = new ArrayList<>();
         Item item = new Item(id, "name" + id, id * 2, new ArrayList<>());
         items.add(item);
         return new Order(id, id, items);
     }
 
-    private List<Order> orderList(int size) {
+    public static List<Order> orderList(int size) {
         List<Order> orderList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             orderList.add(getTemplateOrder(i));

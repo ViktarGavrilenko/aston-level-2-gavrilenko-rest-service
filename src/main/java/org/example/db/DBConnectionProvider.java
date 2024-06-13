@@ -2,9 +2,7 @@ package org.example.db;
 
 import org.example.config.ConfigurationProperties;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -66,23 +64,13 @@ public class DBConnectionProvider {
     }
 
     private void createTablesIfNotExists() {
-        try {
-            Statement preparedStatement = getConnection().createStatement();
-            BufferedReader reader = new BufferedReader(new FileReader("schema.sql"));
-            String line;
-            String text = getTextFromInputStream(DBConnectionProvider.class.getClassLoader().getResourceAsStream("schema.sql"));
-            StringBuilder sb = new StringBuilder();
-
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-                if (line.endsWith(";")) {
-                    preparedStatement.execute(sb.toString());
-                    sb.setLength(0);
-                }
+        try (Statement preparedStatement = getConnection().createStatement()) {
+            String text = getTextFromInputStream(
+                    DBConnectionProvider.class.getClassLoader().getResourceAsStream("schema.sql"));
+            String tables[] = text.split(";");
+            for (String table : tables) {
+                preparedStatement.execute(table);
             }
-/*            PreparedStatement pstmt = getConnection().prepareStatement(
-                    getTextFromInputStream(DBConnectionProvider.class.getClassLoader().getResourceAsStream("schema.sql")));
-            pstmt.execute();*/
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
