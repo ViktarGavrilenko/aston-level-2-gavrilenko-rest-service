@@ -90,25 +90,28 @@ public class DBConnectionProvider {
     }
 
     public ResultSet sendSelectQuery(String sqlQuery) {
-        Connection connection = getConnection();
-        Statement statement;
-        try {
-            statement = connection.createStatement();
-            return statement.executeQuery(sqlQuery);
+        ResultSet resultSet;
+        try (Statement statement = getConnection().createStatement();) {
+            resultSet = statement.executeQuery(sqlQuery);
         } catch (SQLException e) {
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }
+        return resultSet;
     }
 
     public boolean sendSqlQuery(String sqlQuery) {
         boolean result = false;
-        Connection connection = getConnection();
 
-        try (Statement statement = connection.createStatement()) {
+        try (Statement statement = getConnection().createStatement()) {
             if (statement.executeUpdate(sqlQuery) > 0) {
                 result = true;
             }
         } catch (SQLException e) {
+            try {
+                getConnection().close();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             throw new IllegalArgumentException(SQL_QUERY_FAILED, e);
         }
         return result;

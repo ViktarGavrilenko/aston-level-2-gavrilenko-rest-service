@@ -3,10 +3,7 @@
   "name": "SomeItem",
   "price": 1,
   "orders": [
-    {
-      "id": 0,
-      "number": 25,
-      "items": []
-    }
+    1,
+    2
   ]
 }
