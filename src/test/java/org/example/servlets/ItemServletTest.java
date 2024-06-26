@@ -61,7 +61,7 @@ class ItemServletTest {
     @Test
     void doPostTest() throws IOException {
         ServletInputStream servletInputStream = getServletInputStream(getTextFromInputStream(
-                OrderServletTest.class.getClassLoader().getResourceAsStream("item.json")));
+                OrderServletTest.class.getClassLoader().getResourceAsStream("itemDTO.json")));
         when(request.getInputStream()).thenReturn(servletInputStream);
         when(itemService.save(any(Item.class))).thenReturn(getTemplateItem(1));
         when(dtoMapper.itemDTOToItem(any(ItemDTO.class))).thenReturn(getTemplateItem(1));
@@ -73,7 +73,7 @@ class ItemServletTest {
     @Test
     void doPutTest() throws IOException {
         ServletInputStream servletInputStream = getServletInputStream(getTextFromInputStream(
-                OrderServletTest.class.getClassLoader().getResourceAsStream("item.json")));
+                OrderServletTest.class.getClassLoader().getResourceAsStream("itemDTO.json")));
         when(request.getInputStream()).thenReturn(servletInputStream);
         itemServlet.doPut(request, response);
         Mockito.verify(dtoMapper, times(1)).itemDTOToItem(any(ItemDTO.class));

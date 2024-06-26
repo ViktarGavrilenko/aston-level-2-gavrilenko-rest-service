@@ -61,7 +61,7 @@ class BuyerServletTest {
     @Test
     void doPostTest() throws IOException {
         ServletInputStream servletInputStream = getServletInputStream(getTextFromInputStream(
-                OrderServletTest.class.getClassLoader().getResourceAsStream("buyer.json")));
+                OrderServletTest.class.getClassLoader().getResourceAsStream("buyerDTO.json")));
         when(request.getInputStream()).thenReturn(servletInputStream);
         when(buyerService.save(any(Buyer.class))).thenReturn(getTemplateBuyer(1));
         when(dtoMapper.buyerDTOToBuyer(any(BuyerDTO.class))).thenReturn(getTemplateBuyer(1));
@@ -73,7 +73,7 @@ class BuyerServletTest {
     @Test
     void doPutTest() throws IOException {
         ServletInputStream servletInputStream = getServletInputStream(getTextFromInputStream(
-                OrderServletTest.class.getClassLoader().getResourceAsStream("buyer.json")));
+                OrderServletTest.class.getClassLoader().getResourceAsStream("buyerDTO.json")));
         when(request.getInputStream()).thenReturn(servletInputStream);
         buyerServlet.doPut(request, response);
         Mockito.verify(dtoMapper, times(1)).buyerDTOToBuyer(any(BuyerDTO.class));

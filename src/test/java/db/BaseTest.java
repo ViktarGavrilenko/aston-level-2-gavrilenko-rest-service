@@ -8,7 +8,6 @@ import org.example.model.Order;
 import org.example.repository.impl.BuyerRepositoryImpl;
 import org.example.repository.impl.ItemRepositoryImpl;
 import org.example.repository.impl.OrderRepositoryImpl;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.testcontainers.containers.MySQLContainer;
@@ -27,24 +26,15 @@ public class BaseTest {
     static MySQLContainer<?> mySQLContainer = new MySQLContainer<>(
             "mysql:8"
     );
-
-    protected BuyerRepositoryImpl buyerRepository;
-    protected ItemRepositoryImpl itemRepository;
-    protected OrderRepositoryImpl orderRepository;
+    protected static DBConnectionProvider connectionProvider;
+    protected static BuyerRepositoryImpl buyerRepository;
+    protected static ItemRepositoryImpl itemRepository;
+    protected static OrderRepositoryImpl orderRepository;
 
     @BeforeAll
     static void beforeAll() {
         mySQLContainer.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        mySQLContainer.stop();
-    }
-
-    @BeforeEach
-    void setUp() {
-        DBConnectionProvider connectionProvider = new DBConnectionProvider(
+        connectionProvider = new DBConnectionProvider(
                 mySQLContainer.getJdbcUrl(),
                 mySQLContainer.getUsername(),
                 mySQLContainer.getPassword()
@@ -52,6 +42,10 @@ public class BaseTest {
         buyerRepository = new BuyerRepositoryImpl(connectionProvider);
         itemRepository = new ItemRepositoryImpl(connectionProvider);
         orderRepository = new OrderRepositoryImpl(connectionProvider);
+    }
+
+    @BeforeEach
+    void setUp() {
         connectionProvider.sendSqlQuery(DELETE_ALL_BUYER);
         connectionProvider.sendSqlQuery(DELETE_ALL_ITEM);
         connectionProvider.sendSqlQuery(DELETE_ALL_ORDER);
