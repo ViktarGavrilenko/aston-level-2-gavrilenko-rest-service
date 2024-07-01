@@ -20,7 +20,7 @@ import static org.example.utils.StreamUtils.getTextFromInputStream;
 public class BuyerServlet extends HttpServlet {
     private BuyerServiceImpl buyerService = new BuyerServiceImpl();
     private BuyerDtoMapperImpl dtoMapper = new BuyerDtoMapperImpl();
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
